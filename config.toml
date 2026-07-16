@@ -1,0 +1,25 @@
+[trends]
+country_code = "US"
+window_hours = 24
+top_n = 40
+download_dir = "downloads"
+
+[news]
+top_n = 3
+locale_hl = "en-US"
+locale_gl = "US"
+locale_ceid = "US:en"
+request_timeout_seconds = 15
+max_article_chars = 6000
+max_workers = 4
+
+[openrouter]
+model = "google/gemini-3.5-flash"
+fallback_models = ["z-ai/glm-5.2"]
+timeout_seconds = 60
+max_retries = 2
+summary_word_limit = 120
+prompt_path = "prompts/news-summary.txt"
+
+[output]
+output_dir = "outputs"

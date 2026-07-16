@@ -1,0 +1,67 @@
+name: WhatsUp scheduled
+
+on:
+  schedule:
+    # Mon–Fri 08:45 HKT = 00:45 UTC
+    - cron: "45 0 * * 1-5"
+    # Mon–Fri 20:00 HKT = 12:00 UTC
+    - cron: "0 12 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      schedule_type:
+        description: "Which schedule config to run"
+        required: true
+        type: choice
+        options:
+          - morning
+          - evening
+        default: morning
+
+jobs:
+  morning:
+    name: Morning (24h / top 40)
+    if: >
+      (github.event_name == 'schedule' && github.event.schedule == '45 0 * * 1-5') ||
+      (github.event_name == 'workflow_dispatch' && inputs.schedule_type == 'morning')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8
+        with:
+          enable-cache: true
+          python-version: "3.12"
+
+      - name: Run morning pipeline
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: uv run --frozen python main.py --window-hours 24 --top-n 40
+
+  evening:
+    name: Evening (4h / top 30)
+    if: >
+      (github.event_name == 'schedule' && github.event.schedule == '0 12 * * 1-5') ||
+      (github.event_name == 'workflow_dispatch' && inputs.schedule_type == 'evening')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8
+        with:
+          enable-cache: true
+          python-version: "3.12"
+
+      - name: Run evening pipeline
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: uv run --frozen python main.py --window-hours 4 --top-n 30
