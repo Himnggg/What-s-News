@@ -1,8 +1,8 @@
-# WhatsUp
+# WhatsNews
 
 ![WhatsUp Banner](assets/github-banner.png)
 
-WhatsUp fetches US Google Trends records from the past 24 hours, ranks them by
+What's News fetches US Google Trends records from the past 24 hours, ranks them by
 search volume, finds the top Google News RSS stories for each top trend, and
 summarizes the news with OpenRouter.
 
