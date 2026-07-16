@@ -10,4 +10,5 @@ downloads/
 # Virtual environments
 .venv
 .env
+outputs/
 skill
