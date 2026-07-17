@@ -3,9 +3,9 @@ name: WhatsUp scheduled
 on:
   schedule:
     # Mon–Fri 08:45 HKT = 00:45 UTC
-    - cron: "45 0 * * 1-5"
+    - cron: "43 0 * * 1-5"
     # Mon–Fri 20:00 HKT = 12:00 UTC
-    - cron: "0 12 * * 1-5"
+    - cron: "7 12 * * 1-5"
   workflow_dispatch:
     inputs:
       schedule_type:
