@@ -2,10 +2,10 @@ name: WhatsUp scheduled
 
 on:
   schedule:
-    # Mon–Fri 08:45 HKT = 00:45 UTC
-    - cron: "43 0 * * 1-5"
-    # Mon–Fri 20:00 HKT = 12:00 UTC
-    - cron: "7 12 * * 1-5"
+    # Daily 11:44 HKT = 03:44 UTC
+    - cron: "44 3 * * *"
+    # Daily 20:00 HKT = 12:00 UTC
+    - cron: "0 12 * * *"
   workflow_dispatch:
     inputs:
       schedule_type:
@@ -21,7 +21,7 @@ jobs:
   morning:
     name: Morning (24h / top 40)
     if: >
-      (github.event_name == 'schedule' && github.event.schedule == '45 0 * * 1-5') ||
+      (github.event_name == 'schedule' && github.event.schedule == '44 3 * * *') ||
       (github.event_name == 'workflow_dispatch' && inputs.schedule_type == 'morning')
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -46,7 +46,7 @@ jobs:
   evening:
     name: Evening (4h / top 30)
     if: >
-      (github.event_name == 'schedule' && github.event.schedule == '0 12 * * 1-5') ||
+      (github.event_name == 'schedule' && github.event.schedule == '0 12 * * *') ||
       (github.event_name == 'workflow_dispatch' && inputs.schedule_type == 'evening')
     runs-on: ubuntu-latest
     timeout-minutes: 30
